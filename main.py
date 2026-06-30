@@ -13,7 +13,7 @@ class Vehicle(ABC):
     def set_available(self, available):
         self.__available = available
 
-    @abstractmethod
+    
     def rent(self):
         if self.__available:
             self.__available = False
@@ -21,7 +21,7 @@ class Vehicle(ABC):
         else:
             print('Sorry not available to rent')
 
-    @abstractmethod
+    
     def return_vehicle(self):
         if not self.__available:
             self.__available = True
@@ -31,51 +31,36 @@ class Vehicle(ABC):
 
     @abstractmethod
     def calculate_bill(self):
-        days = int(input('How many days rent for?\n='))
-        total_bill = days * self.rent_per_day
-        print(f'Your Total bill is, ${total_bill}')
+        pass
 
 
 class Car(Vehicle):
     def __init__(self, name, rent_per_day, available):
         super().__init__(name, rent_per_day, available)
-        self.rent_per_day = int(rent_per_day - ((rent_per_day*5)/100)) # Using Int for avoiding fractions, here 5% discount is applied
+        
 
-    def rent(self):
-        super().rent()
-
-    def return_vehicle(self):
-        super().return_vehicle()
-    
-    def calculate_bill(self):
-        super().calculate_bill()
+    def calculate_bill(self, days):
+        total_bill = self.rent_per_day * days
+        discount_bill = int(total_bill * 0.95)
+        print(f'Your total bill is, {discount_bill}') 
 
 class Bike(Vehicle):
     def __init__(self, name, rent_per_day, available):
         super().__init__(name, rent_per_day, available)
 
-    def rent(self):
-        super().rent()
-        
-    def return_vehicle(self):
-        super().return_vehicle()
-    
-    def calculate_bill(self):
-        super().calculate_bill()
+    def calculate_bill(self, days):
+        total_bill = self.rent_per_day * days
+        discount_bill = total_bill
+        print(f'Your total bill is, {discount_bill}') 
 
 class Bus(Vehicle):
     def __init__(self, name, rent_per_day, available):
         super().__init__(name, rent_per_day, available)
-        self.rent_per_day = int(rent_per_day - ((rent_per_day*10)/100))# Using Int for avoiding fractions, here 10% discount is applied
 
-    def rent(self):
-        super().rent()
-
-    def return_vehicle(self):
-        super().return_vehicle()
-
-    def calculate_bill(self):
-        super().calculate_bill()
+    def calculate_bill(self, days):
+        total_bill = self.rent_per_day * days
+        discount_bill = int(total_bill * 0.90)
+        print(f'Your total bill is, {discount_bill}') 
 
 class Vehicles:
     def __init__(self):
@@ -84,11 +69,11 @@ class Vehicles:
     def show_vehicles(self):
         for vehicle in self.vehicles:
             if isinstance(vehicle, Car):
-                print(f'Type: Car, Brand: {vehicle.name}, Rent: {vehicle.rent_per_day}\Day, Available: {vehicle.get_available()}')
+                print(f'Type: Car, Brand: {vehicle.name}, Rent: {vehicle.rent_per_day}/Day, Available: {vehicle.get_available()}')
             if isinstance(vehicle, Bike):
-                print(f'Type: Bike, Brand: {vehicle.name}, Rent: {vehicle.rent_per_day}\Day, Available: {vehicle.get_available()}')
+                print(f'Type: Bike, Brand: {vehicle.name}, Rent: {vehicle.rent_per_day}/Day, Available: {vehicle.get_available()}')
             if isinstance(vehicle, Bus):
-                print(f'Type: Bus, Brand: {vehicle.name}, Rent: {vehicle.rent_per_day}\Day, Available: {vehicle.get_available()}')
+                print(f'Type: Bus, Brand: {vehicle.name}, Rent: {vehicle.rent_per_day}/Day, Available: {vehicle.get_available()}')
 
     def rent_vehicle(self):
         print("""
@@ -132,11 +117,17 @@ class Vehicles:
         vehicle_type = input('Choose vehicle type:\n=')
 
         if vehicle_type == '1':
-            car.calculate_bill()
+            vehicle = self.vehicles[0]
+            days = int(input('how many days rent for\n='))
+            vehicle.calculate_bill(days)
         if vehicle_type == '2':
-            bike.calculate_bill()
+            vehicle = self.vehicles[1]
+            days = int(input('how many days rent for\n='))
+            vehicle.calculate_bill(days)
         if vehicle_type == '3':
-            bus.calculate_bill()
+            vehicle = self.vehicles[2]
+            days = int(input('how many days rent for\n='))
+            vehicle.calculate_bill(days)
 
         
     
